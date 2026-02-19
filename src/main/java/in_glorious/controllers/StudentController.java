@@ -1,10 +1,12 @@
 package in_glorious.controllers;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,12 +30,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/api/v1/student")
 @RequiredArgsConstructor
 @Slf4j
-public class StudentContro {
+public class StudentController {
 
     private final StudentService service;
 
     @GetMapping
-    public ResponseEntity<List<Student>> getStudent(){
+    public ResponseEntity<Page<Student>> getStudent(){
         return ResponseEntity.ok(service.getStudent());
     }
     @PostMapping("/search_by")
@@ -57,15 +59,10 @@ public class StudentContro {
     }
    
     @PostMapping("/upload_picture")
-    public ResponseEntity<String> uploadStudentPicture(@RequestParam("file") MultipartFile file){
-            try {
-            Files.createDirectories(Paths.get("uploads"));
-            String upat = "E:\\project\\spring-boot\\glorious-educational\\src\\main\\java\\in_glorious\\models";
-            Path path = Paths.get(upat + file.getOriginalFilename());
-            Files.write(path, file.getBytes());
-            return ResponseEntity.ok("Image uploaded successfully");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Upload failed");
-        }
+    public ResponseEntity<String> uploadStudentPicture(
+                                            @RequestParam("file") MultipartFile picture,
+                                            @RequestParam("user_id") String id) throws Exception{
+         service.uploadImage(picture,id);
+        return ResponseEntity.ok("ok");
     }
 }

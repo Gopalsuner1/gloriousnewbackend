@@ -3,6 +3,8 @@ package in_glorious.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +23,6 @@ List<Student> findByFirstNameContainingIgnoreCaseAndScholarStatus(
 List<Student> findByLastNameContainingIgnoreCase(String keyword);
 
 List<Student> findByFatherNameContainingIgnoreCase(String keyword);
-    boolean existsByScholar(String scholar);
+boolean existsByScholar(String scholar);
+Page<Student> findAll(Pageable pageable);
 }
