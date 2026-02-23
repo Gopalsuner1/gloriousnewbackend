@@ -12,12 +12,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
 import in_glorious.dtos.StudentSearch;
 import in_glorious.exceptions.StudentExist;
 import in_glorious.exceptions.StudentNotFound;
 import in_glorious.models.Constaints;
+import in_glorious.models.ScholarStatus;
 import in_glorious.models.Student;
 import in_glorious.repositories.StudentRepo;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +48,7 @@ public class StudentService {
     public List<Student> filterStudent(StudentSearch search){
        return switch (search.getSearch_id()) {
             case Constaints.searchByFirstName -> 
-                studentRepo.findByFirstNameContainingIgnoreCaseAndScholarStatus(search.getValue(),search.getScholar_status());
+                studentRepo.findByFirstNameStartingWithIgnoreCaseAndScholarStatus(search.getValue(),search.getScholar_status());
             case Constaints.searchByLastName -> 
                 studentRepo.findByLastNameContainingIgnoreCase(search.getValue());
             case Constaints.searchByFatherName -> 
@@ -72,5 +74,19 @@ public class StudentService {
         student1.setProfileUrl(url);
         studentRepo.save(student1);
     }
+
+
+    public List<Student> searchByName(String keyword, ScholarStatus status) {
+    String[] parts = keyword.trim().split("\\s+");
+    if (parts.length == 1) {
+        return studentRepo
+          .findByFirstNameStartingWithIgnoreCaseAndScholarStatus(parts[0], status);
+    }
+    return studentRepo.searchByFullName(
+        parts[0],
+        parts[1],
+        status
+    );
+}
     
 }

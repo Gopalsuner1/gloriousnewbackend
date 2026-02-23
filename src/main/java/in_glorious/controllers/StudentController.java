@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,10 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import in_glorious.dtos.StudentSearch;
 import in_glorious.models.Student;
 import in_glorious.services.student.StudentService;
-import jakarta.servlet.annotation.MultipartConfig;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/v1/student")
 @RequiredArgsConstructor
@@ -41,6 +41,11 @@ public class StudentController {
     @PostMapping("/search_by")
     public ResponseEntity<List<Student>> getStudentBy(@Validated @RequestBody StudentSearch search){
         List<Student> students = service.searchStudent(search);
+        return ResponseEntity.ok(students);
+    }
+    @PostMapping("/search_by_name")
+    public ResponseEntity<List<Student>> getStudentByName(@Validated @RequestBody StudentSearch search){
+        List<Student> students = service.searchByName(search.getValue(),search.getScholar_status());
         return ResponseEntity.ok(students);
     }
     @PostMapping
