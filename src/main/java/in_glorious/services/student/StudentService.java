@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 
 import in_glorious.dtos.StudentSearch;
+import in_glorious.dtos.StudentView;
 import in_glorious.exceptions.StudentExist;
 import in_glorious.exceptions.StudentNotFound;
 import in_glorious.models.Constaints;
@@ -39,13 +40,13 @@ public class StudentService {
        return studentRepo.save(newStudent);
     }
     //Search Students
-    public List<Student> searchStudent(StudentSearch search){
-        List<Student> students = filterStudent(search);
+    public List<?> searchStudent(StudentSearch search){
+        List<?> students = filterStudent(search);
         if(students.size()<0) throw new StudentNotFound("Student Not Exist ");
         return students;
     }
     //Filter Students
-    public List<Student> filterStudent(StudentSearch search){
+    public List<?> filterStudent(StudentSearch search){
        return switch (search.getSearch_id()) {
             case Constaints.searchByFirstName -> 
                 studentRepo.findByFirstNameStartingWithIgnoreCaseAndScholarStatus(search.getValue(),search.getScholar_status());
@@ -76,7 +77,7 @@ public class StudentService {
     }
 
 
-    public List<Student> searchByName(String keyword, ScholarStatus status) {
+    public List<?> searchByName(String keyword, ScholarStatus status) {
     String[] parts = keyword.trim().split("\\s+");
     if (parts.length == 1) {
         return studentRepo

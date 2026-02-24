@@ -38,14 +38,15 @@ public class StudentController {
     public ResponseEntity<Page<Student>> getStudent(){
         return ResponseEntity.ok(service.getStudent());
     }
-    @PostMapping("/search_by")
-    public ResponseEntity<List<Student>> getStudentBy(@Validated @RequestBody StudentSearch search){
-        List<Student> students = service.searchStudent(search);
-        return ResponseEntity.ok(students);
-    }
+    // @PostMapping("/search_by")
+    // public ResponseEntity<List<Student>> getStudentBy(@Validated @RequestBody StudentSearch search){
+    //     List<Student> students = service.searchStudent(search);
+    //     return ResponseEntity.ok(students);
+    // }
     @PostMapping("/search_by_name")
-    public ResponseEntity<List<Student>> getStudentByName(@Validated @RequestBody StudentSearch search){
-        List<Student> students = service.searchByName(search.getValue(),search.getScholar_status());
+    public ResponseEntity<List<?>> getStudentByName(@Validated @RequestBody StudentSearch search){
+        log.info("mathod is calleod contoller");
+        List<?> students = service.searchByName(search.getValue(),search.getScholar_status());
         return ResponseEntity.ok(students);
     }
     @PostMapping
