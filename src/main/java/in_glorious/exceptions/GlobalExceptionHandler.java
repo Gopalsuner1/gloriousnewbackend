@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import in_glorious.models.ErrorMassage;
+import in_glorious.student.models.ErrorMassage;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

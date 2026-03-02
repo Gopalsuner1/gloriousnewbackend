@@ -1,7 +1,7 @@
-package in_glorious.dtos;
+package in_glorious.student.dtos;
 
 
-import in_glorious.models.ScholarStatus;
+import in_glorious.student.models.ScholarStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,12 +12,8 @@ import lombok.NonNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentSearch {
-   private byte search_id;
-   @NonNull
+public class SSearchRequest {
+   private SStudentBy student_by;
    private String value;
-   @NonNull
-   private String session_id;
-   @NonNull
    private ScholarStatus scholar_status;
-    }
+}
